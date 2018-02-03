@@ -4,8 +4,7 @@ let cors = require('cors');
 
 app.get('/keyboard', function (req, res) {
 	const menu = {
-		type: 'buttons',
-		buttons: ["메뉴1", "메뉴2", "메뉴3"]
+		type: 'text'
 	};
 	res.set({
 		'content-type': 'application/json'
