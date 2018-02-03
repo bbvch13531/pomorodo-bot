@@ -28,14 +28,7 @@ app.post('/message',function (req,res){
 	let message = {
 		"message":{
 				"text": answer
-		},
-		"keyboard":{
-			"type": "buttons",
-			"buttons":[
-				"메뉴1",
-				"메뉴2",
-				"메뉴3"
-			]
+		}
 		}
 	}
 	res.set({
