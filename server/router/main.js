@@ -1,7 +1,9 @@
 let express = require('express');
 let app = express();
 let cors = require('cors');
+let bodyParser = require('body-parser');
 
+app.use(bodyParser.json());
 app.get('/keyboard', function (req, res) {
 	const menu = {
 		type: 'text'
@@ -13,29 +15,73 @@ app.get('/keyboard', function (req, res) {
 });
 
 app.post('/message',function (req,res){
-	const obj={
-		   user_key: req.body.user_key,
-        type: req.body.type,
-        content: req.body.content
+  let user_key = decodeURIComponent(req.body.user_key); // user's key
+  let type = decodeURIComponent(req.body.type); // message type
+  let content = decodeURIComponent(req.body.content); // user's message
+	
+	let ans,flag=1;
+	if(content.includes('안녕'))	ans='안녕하세요'
+	else if(content.includes('hello'))  ans='hello there'
+		else if(content.includes('경영'))	ans='토마토맛토 vs 토맛토마토'
+	else if(content.includes('재호'))	ans='머러디발자'	
+	else if(content.includes('윤수'))	ans='정윤수 바보'
+	else if(content.includes('영수'))	ans='노드마스터'
+	else if(content.includes('정연'))	ans='병특 가즈아'
+	else if(content.includes('우찬'))	ans='한 번 해병대는 영원한 해병대'
+	else if(content.includes('대호'))	ans='리액트마스터'
+	else if(content.includes('완수'))	ans='호에엥'
+	else if(content.includes('지수'))       ans='안녕하십니까 큰형님'
+	else if(content.includes('석호'))       ans='썩고서코푸코'	
+	else if(content.includes('병욱'))       ans='유니티 싫어요 언리얼 좋아요'
+	else if(content.includes('민재'))       ans='안녕 민재야!'
+	
+else if(content=='입력 방법')	{
+		ans='입력방법은 ...'
+		flag=2;
+		console.log('input 입력 방법');
 	}
-	let answer;
-	if(content=='안녕'){
-		answer='안녕하세요'
-	}
-	else {
-		answer='처리되지 않은 값입니다.'
-	}
+	else if(content=='메뉴2')	ans='메뉴2에요!'
+	else if(content=='메뉴3')	ans='메뉴3입니다~'
+	else ans='처리되지 않은 값입니다.'	
+	
 	let message = {
 		"message":{
-				"text": answer
+			"text": ans
 		}
+		
+	}
+	let message2 = {
+		"message":{
+				"buttons":[
+			"입력 방법",
+			"메뉴2",
+			"메뉴3"
+			]
 		}
 	}
+	if(flag==1){
+		res.set({
+			'content-type': 'application/json'
+		}).send(message);
+	}
+	else{
+		res.set({
+			'content-type': 'application/json'
+		}).send(message2);
+	}
+});
+app.post('/friend', function(req, res){
+	let user_key = decodeURIComponent(req.body.user_key);
+	let message = {
+		"message":{
+			"text": "안녕하세요 토마토맛토입니다."
+		}
+	}
+console.log('친구추가됨');
 	res.set({
 		'content-type': 'application/json'
-	}).send(JSON.stringify(message));
+	}).send(message);
 });
-
 let server = app.listen(3031, function(){
 	console.log('server is running in 3031');
 })
